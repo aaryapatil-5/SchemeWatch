@@ -1,4 +1,4 @@
-# SchemeWatch — Static Anomaly Review Frontend
+# SchemeWatch — Static Anomaly Review
 
 A Vite + React frontend prototype for explainable anomaly detection over published scheme works data.
 
