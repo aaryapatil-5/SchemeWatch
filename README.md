@@ -30,78 +30,55 @@ Then open the local URL shown by Vite.
 ## System Architecture
 
 ```text
-                    ┌─────────────────────────────┐
-                    │      Published Works Data   │
-                    │  • Work Description         │
-                    │  • Estimated Cost            │
-                    │  • Location / District       │
-                    │  • Work Category             │
-                    │  • Sanction Details          │
-                    └──────────────┬──────────────┘
-                                   │
-                                   ▼
-                    ┌─────────────────────────────┐
-                    │       Data Preprocessing     │
-                    │  • Data Cleaning             │
-                    │  • Missing Value Handling    │
-                    │  • Normalization             │
-                    │  • Duplicate Standardization│
-                    └──────────────┬──────────────┘
-                                   │
-                                   ▼
-              ┌────────────────────────────────────────┐
-              │       Feature Extraction Layer         │
-              │                                        │
-              │  • Cost per Asset / Unit               │
-              │  • Work Category                        │
-              │  • District / Location                  │
-              │  • Work Description Similarity          │
-              │  • Sanction & Completion Information    │
-              └───────────────────┬────────────────────┘
-                                  │
-                                  ▼
-        ┌──────────────────────────────────────────────────┐
-        │             Anomaly Detection Engine              │
-        │                                                  │
-        │  ┌────────────────────┐  ┌────────────────────┐ │
-        │  │ Cost Outlier       │  │ Near-Duplicate     │ │
-        │  │ Detection          │  │ Work Detection     │ │
-        │  └────────────────────┘  └────────────────────┘ │
-        │                                                  │
-        │  • Peer-group comparison                         │
-        │  • District-level benchmarking                    │
-        │  • Description similarity                         │
-        │  • Statistical / rule-based outlier detection     │
-        └──────────────────────┬───────────────────────────┘
-                               │
-                               ▼
-                    ┌─────────────────────────────┐
-                    │      Anomaly Scoring        │
-                    │                             │
-                    │  • Cost Anomaly Score       │
-                    │  • Duplicate Similarity     │
-                    │  • Combined Risk Indicator  │
-                    └──────────────┬──────────────┘
-                                   │
-                                   ▼
-                    ┌─────────────────────────────┐
-                    │      Results & Alerts        │
-                    │                             │
-                    │  • Flagged Works             │
-                    │  • Reason for Flag           │
-                    │  • Supporting Metrics        │
-                    │  • District Comparison       │
-                    └──────────────┬──────────────┘
-                                   │
-                                   ▼
-                    ┌─────────────────────────────┐
-                    │       Review Dashboard       │
-                    │                             │
-                    │  • Anomaly List              │
-                    │  • Filters                    │
-                    │  • Charts & Statistics       │
-                    │  • Work-level Details        │
-                    └─────────────────────────────┘
+                       MPLADS DATA SOURCES
+                       │
+       ┌───────────────┼────────────────┐
+       │               │                │
+   Work Data       Financial Data   Progress Data
+   • Sanctions     • Expenditure    • Work status
+   • Estimates     • Payments       • Completion
+   • Locations     • Fund release   • Delays
+       │               │                │
+       └───────────────┼────────────────┘
+                       ↓
+              DATA INGESTION LAYER
+           APIs / CSV / Database / Portal
+                       ↓
+              DATA CLEANING & ETL
+        Missing values • Validation • Standardization
+                       ↓
+             FEATURE ENGINEERING
+       ┌───────────────┼────────────────┐
+       │               │                │
+   Cost/Work       Time/Progress     Location
+   Features         Features         Features
+       │               │                │
+       └───────────────┼────────────────┘
+                       ↓
+              AI / ANALYTICS ENGINE
+       ┌───────────────┼────────────────┐
+       │               │                │
+   Anomaly         Duplicate/       Delay &
+   Detection       Similarity       Overrun
+       │             Detection       Prediction
+       │               │                │
+       └───────────────┼────────────────┘
+                       ↓
+                 RISK ENGINE
+        Risk Score + Explainable Reasons
+                       ↓
+              ALERT & DECISION LAYER
+                       ↓
+        ┌──────────────┼───────────────┐
+        ↓              ↓               ↓
+    Ministry       District        MP / Nodal
+    Dashboard      Dashboard       Dashboard
+        │              │               │
+        └──────────────┼───────────────┘
+                       ↓
+              HUMAN VERIFICATION
+                       ↓
+             Investigation / Action
 ```
 
 ### Architecture Overview
